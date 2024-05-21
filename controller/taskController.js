@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 // Controller for creating a new task
 const createTask = async (req, res) => {
   try {
-    //console.log(req.body)
+    ////////console.log(req.body)
     const newTask = await Task.create(req.body);
     res.status(201).json(newTask);
   } catch (error) {
@@ -38,7 +38,7 @@ const getTaskById = async (req, res) => {
 // Controller for updating a task
 const updateTask = async (req, res) => {
   try {
-    //console.log(req.body)
+    ////////console.log(req.body)
     const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!updatedTask) {
       return res.status(404).json({ message: 'Task not found' });
@@ -70,14 +70,14 @@ const getAllTasksForUser = async (req, res) => {
     const userId = req.params.id// Assuming userId is available in the request parameters
 
     const allTasks = await Task.find();
-    //console.log(userId)
+    ////////console.log(userId)
     const tasksForUser=[]
     for(let i=0;i<allTasks.length;i++){
       if(((allTasks[i].assignTaskTo[0]).toString())?.includes(userId)){
         tasksForUser.push(allTasks[i])
       }
     }
-    //console.log(tasksForUser)    
+    ////////console.log(tasksForUser)    
     res.status(200).json(tasksForUser);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -97,8 +97,11 @@ const markTaskAsComplete = async (req, res) => {
     // Update the taskCompleted field to true
     if(task.taskCompleted == true){
     task.taskCompleted = false;
+    task.CompletedAt=null
     }else{
     task.taskCompleted = true;
+    task.CompletedAt=Date.now()
+
     }
     // Save the updated task
     await task.save();
@@ -116,17 +119,25 @@ const getAllIncompleteTasks = async (req, res) => {
     const userId = req.params.id
     const allTasks = await Task.find({ taskCompleted: false });
     const tasksForUser=[]
-    for(let i=0;i<allTasks.length;i++){
-      if((allTasks[i].assignTaskTo[0])){
-      if(((allTasks[i].assignTaskTo[0]).toString())?.includes(userId)){
-        tasksForUser.push(allTasks[i])
-      }
+  //   for(let i=0;i<allTasks.length;i++){
+  //     if((allTasks[i].assignTaskTo[0])){
+  //     if(((allTasks[i].assignTaskTo[0]).toString())?.includes(userId)){
+  //       tasksForUser.push(allTasks[i])
+  //     }
+  //   }
+  // }
+  for(let i=0;i<allTasks.length;i++){
+    let temp=allTasks[i].assignTaskTo
+    for(let j=0;j<temp.length;j++){
+    if((temp[j]).toString()==userId){
+      tasksForUser.push(allTasks[i])
     }
   }
-    //console.log(tasksForUser)    
+}
+    ////////console.log(tasksForUser)    
     res.status(200).json(tasksForUser);
   } catch (error) {
-    console.log(error)
+    //////console.log(error)
     res.status(500).json({ error: error.message });
   }
 };
@@ -137,15 +148,23 @@ const getAllCompletedTasks = async (req, res) => {
     const userId = req.params.id
     const allTasks = await Task.find({ taskCompleted: true });
     const tasksForUser=[]
-    console.log(userId,allTasks)
+    //////console.log(userId,allTasks)
+    // for(let i=0;i<allTasks.length;i++){
+    //   if((allTasks[i].assignTaskTo[0])){
+    //   if(((allTasks[i].assignTaskTo[0]).toString())?.includes(userId)){
+    //     tasksForUser.push(allTasks[i])
+    //   }
+    // }
+    // }
     for(let i=0;i<allTasks.length;i++){
-      if((allTasks[i].assignTaskTo[0])){
-      if(((allTasks[i].assignTaskTo[0]).toString())?.includes(userId)){
+      let temp=allTasks[i].assignTaskTo
+      for(let j=0;j<temp.length;j++){
+      if((temp[j]).toString()==userId){
         tasksForUser.push(allTasks[i])
       }
     }
-    }
-    //console.log(tasksForUser)    
+  }
+    ////////console.log(tasksForUser)    
     res.status(200).json(tasksForUser);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -156,8 +175,8 @@ const findTasksByFilter = async (req, res) => {
   try {
     
     const {projectid,taskCompleted,assignTaskTo}=req.body
-    // console.log(assignTaskTo)
-    console.log(req.body)
+    // //////console.log(assignTaskTo)
+    //////console.log(req.body)
     const tasksFilter = {};
     if(projectid){
       tasksFilter.projectid = projectid;
@@ -166,7 +185,7 @@ const findTasksByFilter = async (req, res) => {
       tasksFilter.taskCompleted = taskCompleted;
     }
     const tasks = await Task.find(tasksFilter);
-  //  console.log(tasks)
+  //  //////console.log(tasks)
   let temp=tasks
   if(assignTaskTo){
   temp=[]
@@ -178,7 +197,7 @@ const findTasksByFilter = async (req, res) => {
     }
     }
   }
-    // console.log(tasks)
+    // //////console.log(tasks)
     // Assuming filterKey and filterValue are available in the request body
     // if (!filterKey || !filterValue) {
     //   return res.status(400).json({ message: 'Filter key and value are required' });
@@ -186,11 +205,11 @@ const findTasksByFilter = async (req, res) => {
 
     // Find tasks based on the provided filter key and value
     
-    //console.log(tasks)
+    ////////console.log(tasks)
 
     res.status(200).json(temp);
   } catch (error) {
-    console.log(error)
+    //////console.log(error)
     res.status(500).json({ error: error.message });
   }
 };

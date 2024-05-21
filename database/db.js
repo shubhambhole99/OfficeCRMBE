@@ -9,5 +9,5 @@ mongoose.connect(localDBURI, {
 }).then(() => {
   console.log("Database connection is established");
 }).catch((err) => {
-  console.log("Error while connecting to the database:", err);
+  //////console.log("Error while connecting to the database:", err);
 });

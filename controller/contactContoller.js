@@ -5,30 +5,30 @@ const Contact = require('../models/contactModel');
 const getAllContacts = async (req, res) => {
   try {
     const {project,type}=req.body
-    console.log(req.body)
+    //////console.log(req.body)
     const projectfilter={}
     if(type){
       projectfilter.type=type
     }
-    console.log(projectfilter)
+    //////console.log(projectfilter)
     const contacts = await Contact.find(projectfilter);
     let allcontacts=contacts
-    // console.log(allcontacts)
+    // //////console.log(allcontacts)
     if(project){
       let temp=[]
       allcontacts=[]
-      console.log(contacts.length)
+      //////console.log(contacts.length)
     for(let i=0;i<contacts.length;i++){
       temp=contacts[i].projects
       for(let j=0;j<temp.length;j++){
-        // console.log(temp[j])
+        // //////console.log(temp[j])
         if(temp[j].toString()==project.toString()){
           allcontacts.push(contacts[i])
         }
       }
     }
   }
-    console.log(allcontacts)
+    //////console.log(allcontacts)
     res.status(200).json(allcontacts);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -51,7 +51,7 @@ const getContactById = async (req, res) => {
 
 // Create a new contact
 const createContact = async (req, res) => {
-    console.log(req.body)
+    //////console.log(req.body)
   const contact = new Contact(req.body);
   try {
     const newContact = await contact.save();
@@ -80,14 +80,17 @@ const updateContact = async (req, res) => {
 // Delete a contact
 const deleteContact = async (req, res) => {
   try {
+    //console.log("hi")
     const contact = await Contact.findById(req.params.id);
+    // ////console.log(contact)
     if (contact) {
-      await contact.remove();
+      await Contact.findByIdAndDelete(req.params.id)
       res.json({ message: 'Contact deleted' });
     } else {
       res.status(404).json({ message: 'Contact not found' });
     }
   } catch (error) {
+    ////console.log(error)
     res.status(500).json({ message: error.message });
   }
 };
