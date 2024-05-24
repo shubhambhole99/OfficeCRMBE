@@ -46,7 +46,12 @@ const taskSchema = new mongoose.Schema({
   CompletedAt:{
     type:Date,
     default:null
+  },
+  nooftask:{
+    type:Number,
+    default:0
   }
+
 });
 
 // Create the Task model using the task schema

@@ -1,5 +1,6 @@
 const Task = require('../models/tasksmodel');
 const mongoose = require('mongoose');
+const TaskHistory = require('../models/taskHistory');
 
 // Controller for creating a new task
 const createTask = async (req, res) => {
@@ -230,4 +231,30 @@ const deleteTaskById = async (req, res) => {
   }
 };
 
-module.exports = { createTask, getAllTasks, getTaskById, updateTask, deleteTask, getAllTasksForUser,markTaskAsComplete,getAllIncompleteTasks,getAllCompletedTasks,findTasksByFilter };
+const numberoftask=async(req,res)=>{
+try{
+  obj={}
+  const taskHistory = await TaskHistory.find()
+  for(let i=0;i<taskHistory.length;i++){
+    if((taskHistory[i].taskId)){
+    if(obj[(taskHistory[i].taskId)?.toString()]==undefined){
+      obj[(taskHistory[i].taskId)?.toString()]=1
+    }else{
+      obj[(taskHistory[i].taskId)?.toString()]++
+    }
+
+  }
+}
+  console.log(obj)
+  res.status(200).json(obj)
+}catch(error){
+  console.log(error)
+}
+ 
+// for(let i=0;i<task.length;i++){
+
+// }
+
+}
+
+module.exports = { createTask, getAllTasks, getTaskById, updateTask, deleteTask, getAllTasksForUser,markTaskAsComplete,getAllIncompleteTasks,getAllCompletedTasks,findTasksByFilter,numberoftask};
