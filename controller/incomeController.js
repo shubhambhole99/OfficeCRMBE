@@ -5,13 +5,13 @@ const {updateInvoicebyBills} =require('../controller/invoiceController')
 // Create a new income record
 exports.createIncome = async (req, res) => {
     try {
-        console.log(req.body)
+        //console.log(req.body)
         const income = new Income(req.body);
         await income.save();
         await updateInvoicebyBills()
         res.status(201).json({ success: true, data: income });
     } catch (error) {
-        console.log(error)
+        //console.log(error)
         res.status(400).json({ success: false, error: error.message });
     }
 };
@@ -19,7 +19,8 @@ exports.createIncome = async (req, res) => {
 // Get all income records
 exports.getAllIncome = async (req, res) => {
     try {
-        const incomes = await Income.find();
+
+        const incomes = await Income.find({isDisabled:false});
         res.status(200).json({ success: true, data: incomes });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
@@ -42,7 +43,7 @@ exports.getIncomeById = async (req, res) => {
 // Update an income record by ID
 exports.updateIncomeById = async (req, res) => {
     try {
-        // console.log(req.body)
+        // //console.log(req.body)
         const income = await Income.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
             runValidators: true
@@ -50,6 +51,7 @@ exports.updateIncomeById = async (req, res) => {
         if (!income) {
             return res.status(404).json({ success: false, error: 'Income not found' });
         }
+        await updateInvoicebyBills()
         res.status(200).json({ success: true, data: income });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
@@ -59,7 +61,10 @@ exports.updateIncomeById = async (req, res) => {
 // Delete an income record by ID
 exports.deleteIncomeById = async (req, res) => {
     try {
-        const income = await Income.findByIdAndDelete(req.params.id);
+        // const income = await Income.findByIdAndDelete(req.params.id);
+        const income1=await Income.findById(req.params.id)
+        const income=await Income.findByIdAndUpdate(req.params.id,{isDisabled:!income1.isDisabled})
+        // //console.log(income1)
         if (!income) {
             return res.status(404).json({ success: false, error: 'Income not found' });
         }

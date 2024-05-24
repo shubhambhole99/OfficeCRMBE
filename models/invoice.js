@@ -43,7 +43,7 @@ const InvoiceSchema = new Schema({
     type:{
         type:String
     },
-    isDisable:{
+    isDisabled:{
         type:Boolean,
         default:false
     }

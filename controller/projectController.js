@@ -13,9 +13,9 @@ async function getAllProjects(req, res) {
     }
    
 
-    // //////console.log(projectFilter)
+    // ////////console.log(projectFilter)
     const projects = await Project.find(projectFilter);
-    // //////console.log(projects)
+    // ////////console.log(projects)
     res.json(projects);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -47,7 +47,7 @@ async function createProject(req, res) {
 }
 
 async function updateProject(req, res) {
-  ////////console.log('updateProject');
+  //////////console.log('updateProject');
   const id = req.params.id;
   const newData = req.body;
   try {
@@ -63,7 +63,7 @@ async function updateProject(req, res) {
 }
 
 async function deleteProject(req, res) {
-  ////////console.log('deleteProject');
+  //////////console.log('deleteProject');
   const id = req.params.id;
   try {
     const deletedProject = await Project.findByIdAndDelete(id);

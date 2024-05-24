@@ -18,6 +18,6 @@ router.get('/invoices/:id', invoiceController.getInvoiceById);
 router.put('/:id', invoiceController.updateInvoice);
 
 // Delete an invoice
-router.delete('/invoices/:id', invoiceController.deleteInvoice);
+router.delete('/:id', invoiceController.deleteInvoice);
 
 module.exports = router;

@@ -49,7 +49,11 @@ const IncomeSchema = new Schema({
         file:{
             type:String
         }
-    }]
+    }],
+    isDisabled:{
+        type:Boolean,
+        default:false
+    }
 });
 
 const Income = mongoose.model('Income', IncomeSchema);
