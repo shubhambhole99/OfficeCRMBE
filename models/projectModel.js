@@ -10,6 +10,10 @@ const projectSchema = new Schema({
   status:{
     type: String,
   },
+  stage:{
+    type:String,
+    default:""
+  },
   type: {
     type: String,
     default: null,
@@ -35,11 +39,27 @@ const projectSchema = new Schema({
     type: String,
     default: null,
   },
+  questions: [{
+    question: {
+        type: Schema.Types.ObjectId,
+        ref:'question'
+    },
+    answer: {
+        type: String
+    },
+    prevanswer: [{
+      type: String
+  }],
+}],
   // New field to reference an array of user IDs
   users: [{
     type: Schema.Types.ObjectId,
     ref: 'User',
   }],
+  isDisabled:{
+    type:Boolean,
+    default:false
+}
 });
 
 const Project = mongoose.model('Project', projectSchema);

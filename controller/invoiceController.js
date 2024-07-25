@@ -2,7 +2,7 @@ const Invoice = require('../models/invoice');
 const Income = require('../models/income');
 // Controller function to create a new invoice
 const createInvoice = async (req, res) => {
-    //console.log(req.body)
+    ////////console.log(req.body)
     try {
         const savedInvoice = await Invoice.create(req.body);
         res.status(201).json(savedInvoice);
@@ -69,7 +69,7 @@ const updateInvoicebyBills =async(req,res)=>{
         obj={}
         // Calculating Amount Paid by Iterating thorugh Bills
         for(let i=0;i<allbills.length;i++){
-            // //console.log(allbills[i])
+            // ////////console.log(allbills[i])
             if(allbills[i].invoice){
             if(obj[allbills[i].invoice]==undefined){
                 obj[allbills[i].invoice]=allbills[i].amount
@@ -79,11 +79,11 @@ const updateInvoicebyBills =async(req,res)=>{
             }
         }
     }
-    //console.log(obj)
+    ////////console.log(obj)
         res.status(200).json({message:"hello"})
         const allinvoices=await Invoice.find()
         for(let i=0;i<allinvoices.length;i++){
-            // //console.log(allbills[i])
+            // ////////console.log(allbills[i])
             await Invoice.findByIdAndUpdate(allinvoices[i]._id,{amount_paid:obj[(allinvoices[i]._id).toString()]})
         }
 

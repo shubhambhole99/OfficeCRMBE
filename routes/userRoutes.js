@@ -2,9 +2,14 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controller/userController');
+const { isAuthenticated, authorizeRoles } = require('../middleware/Auth');
+
 
 // Route for getting all users
 router.get('/', userController.getAllUsers);
+
+
+router.put('/check',isAuthenticated,userController.checkloginvalidity)
 
 // Route for getting a user by ID
 router.get('/:id', userController.getUserById);

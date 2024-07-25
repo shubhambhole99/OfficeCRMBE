@@ -3,9 +3,12 @@ const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+
+
+
 async function createUser(req, res) {
   const { username, email, password,role } = req.body;
-  //////////console.log(req.body);
+  ////////////////console.log(req.body);
   try {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -52,7 +55,7 @@ async function login(req, res) {
       const token = jwt.sign({ userId: user._id,username, role:user.role }, 'your_secret_key', {
         expiresIn: '1h' // Token expires in 1 hour
       });
-      // ////console.log(token)
+      // //////////console.log(token)
       res.json({ message: 'Login successful', token });
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -111,11 +114,24 @@ async function deleteUser(req, res) {
   }
 }
 
+async function checkloginvalidity(req,res){
+try{
+  res.json({ data:true });
+
+}
+catch(err){
+  res.status(500).json({ data:false,error: err.message });
+
+}
+
+}
+
 module.exports = {
   getAllUsers,
   getUserById,
   createUser,
   updateUser,
   deleteUser,
-  login
+  login,
+  checkloginvalidity
 };
